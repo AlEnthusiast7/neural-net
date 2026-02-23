@@ -4,14 +4,13 @@ Matrix::Matrix(int r, int c) : rows(r), cols(c) {
   data.resize(r*c, 0.0f);
 }
 
-float &Matrix::operator()(int r, int c)
+float& Matrix::operator()(int r, int c)
 {
-  return data[r*cols + c];
-
+  return data.at((r*cols) + c);
 }
 
-const float &Matrix::operator()(int r , int c) {
-  return data[r * cols + c];
+const float &Matrix::operator()(int r , int c) const {
+  return data.at((r*cols) + c);
 }
 
 Matrix Matrix::dot(const Matrix& a, const Matrix& b)
@@ -22,6 +21,7 @@ Matrix Matrix::dot(const Matrix& a, const Matrix& b)
   Matrix b_t = b.transpose();
 
   Matrix result(a.rows, b.cols);
+
   for (int i=0; i < a.rows; i++)
   {
     for (int j = 0; j < b_t.rows; j++)
@@ -86,8 +86,8 @@ Matrix Matrix::transpose() const {
 
   for (size_t i = 0; i < data.size(); i++)
   {
-    int r = i % cols;
-    int c = i - (r*cols);
+    int r = (float) i / (float) cols;
+    int c = i % cols;
     result(c, r) = (*this)(r, c);
   }
 
@@ -123,11 +123,10 @@ void Matrix::print() const
 {
   for (int i = 0; i < rows; i++)
   {
-    std::cout << "| "
+    std::cout << "| ";
     for (int j = 0; j < cols; j++)
     {
       std::cout << (*this)(i, j) << " ";
-
     }
     std::cout << "|" << std::endl;
   }

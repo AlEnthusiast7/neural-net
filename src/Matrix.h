@@ -38,4 +38,4 @@ class Matrix
 
     // for debugging
     void print() const;
-}
+};
